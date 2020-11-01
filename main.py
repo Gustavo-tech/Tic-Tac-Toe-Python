@@ -1,5 +1,13 @@
+# Atualiza os pontos do jogo
+def update_points(current_player: int = None, points: list = None):
+    if current_player == 0:
+        points[0] += 1
+    else:
+        points[1] += 1
+
 # Mostra as estátisticas do jogo
 def show_winner_stats(current_player: int = None, player_names: list = None, rounds: int = None, points: list = None):
+    print("\n")
     print("----------- Game stats --------------")
     print(f"{player_names[current_player]} VENCEU!!!!!")
     print(f"Foram jogados {rounds} rounds para acabar a partida")
@@ -7,7 +15,7 @@ def show_winner_stats(current_player: int = None, player_names: list = None, rou
 
 # Converte se a pessoa deseja continuar o jogo
 def convert_continue(text: str = None):
-    text.upper()
+    text = text.upper()
 
     if text == "YES":
         return True
@@ -56,7 +64,7 @@ def save_player_name():
 # Verifica o atual jogador
 def check_current_player(current_round: int = None, current_player: int = None):
 
-    if current_round != 1:
+    if current_round != 0:
         if current_player == 0:
             current_player += 1
         else:
@@ -108,7 +116,7 @@ table = [['|  -  |', '|  -  |', '|  -  |'],
         ['|  -  |', '|  -  |', '|  -  |'],
         ['|  -  |', '|  -  |', '|  -  |']]
 
-players_name = save_player_name()
+players_names = save_player_name()
 players_points = [0, 0]
 
 continue_game = True
@@ -116,7 +124,7 @@ game_finished = False
 
 while continue_game:
 
-    current_round = 1
+    current_round = 0
     current_player = 0
 
     while not game_finished:
@@ -141,9 +149,13 @@ while continue_game:
 
         if current_round >= 5:
             game_finished = check_player_play(table)
+
+            if game_finished:
+                update_points(current_player, players_points)
+
         current_round += 1
 
     print_board(table)
-    show_winner_stats(current_player, players_name, current_round, players_points)
+    show_winner_stats(current_player, players_names, current_round, players_points)
     continue_game_string = input("Continuar jogo? YES/NO: ")
     continue_game = convert_continue(continue_game_string)
