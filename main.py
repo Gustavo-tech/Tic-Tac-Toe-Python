@@ -64,7 +64,7 @@ def save_player_name():
 # Verifica o atual jogador
 def check_current_player(current_round: int = None, current_player: int = None):
 
-    if current_round != 0:
+    if current_round != 1:
         if current_player == 0:
             current_player += 1
         else:
@@ -74,29 +74,31 @@ def check_current_player(current_round: int = None, current_player: int = None):
 
 # Verifica se alguém ganhou o jogo
 def check_player_play(table: list = None):
+    players_texts = ['|  X  |', '|  O  |']
 
     somebody_won = False
-    # Verifica todas as linhas
-    if table[0][0] == table[0][1] == table[0][2]:
-        somebody_won = True
-    elif table[1][0] == table[1][1] == table[1][2]:
-        somebody_won = True
-    elif table[2][0] == table[2][1] == table[2][2]:
-        somebody_won = True
+    for player_text in players_texts:
+        # Verifica todas as linhas
+        if table[0][0] == table[0][1] == table[0][2] == player_text:
+            somebody_won = True
+        elif table[1][0] == table[1][1] == table[1][2] == player_text:
+            somebody_won = True
+        elif table[2][0] == table[2][1] == table[2][2] == player_text:
+            somebody_won = True
 
-    # Verifica todas as colunas
-    elif table[0][0] == table[1][0] == table[2][0]:
-        somebody_won = True
-    elif table[0][1] == table[1][1] == table[2][1]:
-        somebody_won = True
-    elif table[0][2] == table[1][2] == table[2][2]:
-        somebody_won = True
+        # Verifica todas as colunas
+        elif table[0][0] == table[1][0] == table[2][0] == player_text:
+            somebody_won = True
+        elif table[0][1] == table[1][1] == table[2][1] == player_text:
+            somebody_won = True
+        elif table[0][2] == table[1][2] == table[2][2] == player_text:
+            somebody_won = True
 
-    # Verifica as diagonais
-    elif table[0][0] == table[1][1] == table[2][2]:
-        somebody_won = True
-    elif table[2][0] == table[1][1] == table[0][3]:
-        somebody_won = True
+        # Verifica as diagonais
+        elif table[0][0] == table[1][1] == table[2][2] == player_text:
+            somebody_won = True
+        elif table[2][0] == table[1][1] == table[0][3] == player_text:
+            somebody_won = True
 
     return somebody_won
 
@@ -112,10 +114,6 @@ def print_board(table: list = None):
                 print(table[line][column], end="")
 
 
-table = [['|  -  |', '|  -  |', '|  -  |'],
-        ['|  -  |', '|  -  |', '|  -  |'],
-        ['|  -  |', '|  -  |', '|  -  |']]
-
 players_names = save_player_name()
 players_points = [0, 0]
 
@@ -126,9 +124,13 @@ while continue_game:
 
     current_round = 0
     current_player = 0
+    table = [['|  -  |', '|  -  |', '|  -  |'],
+             ['|  -  |', '|  -  |', '|  -  |'],
+             ['|  -  |', '|  -  |', '|  -  |']]
 
     while not game_finished:
         print("\n")
+        current_round += 1
         print_board(table)
         current_player = check_current_player(current_round, current_player)
 
@@ -153,9 +155,10 @@ while continue_game:
             if game_finished:
                 update_points(current_player, players_points)
 
-        current_round += 1
-
     print_board(table)
     show_winner_stats(current_player, players_names, current_round, players_points)
     continue_game_string = input("Continuar jogo? YES/NO: ")
     continue_game = convert_continue(continue_game_string)
+
+    if continue_game:
+        game_finished = False
