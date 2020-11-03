@@ -43,20 +43,19 @@ def convert_column(column: str = None):
     else:
         return None
 
+# Valida o texto da posição desejada pelo jogador
+def validate_position_text(position: str = None):
+    possible_lines = ['1', '2', '3']
+    possible_columns = ['A', 'B', 'C']
+
+    if position[0] not in possible_lines and position[1] not in possible_columns:
+        return False
+    else:
+        return True
+
 # Valida a posição desejada pelo jogador
 def validate_position(table: list = None, position: str = None):
-    valid = True
-
-    if position is None:
-        valid = False
-
-    if position[1] is None:
-        valid = False
-
-    if table[int(position[0])][int(position[1])] != '|  -  |':
-        valid = False
-
-    return valid
+    return table[int(position[0])][int(position[1])] == '|  -  |'
 
 # Salva o nome dos jogadores
 def save_player_name():
@@ -139,13 +138,21 @@ while continue_game:
         current_player = check_current_player(current_round, current_player)
 
         position = input("Digite a linha e coluna que deseja preencher: ").upper()
+        valid_text = validate_position_text(position)
+
+        while not valid_text:
+            print("Erro, coluna ou linha digitada incorretamente")
+            position = input("Digite a linha e coluna que deseja preencher: ").upper()
+
         position = position.replace(position[0], convert_line(position[0]))
         position = position.replace(position[1], convert_column(position[1]))
-        valid_position = validate_position(table, position)
 
+        valid_position = validate_position(table, position)
         while not valid_position:
-            print("Jogada inválida, por favor escolha novamente")
-            position = input("Digite a linha e coluna que deseja preencher: ")
+            print("Jogada inválida, por favor escolha uma posição livre")
+            position = input("Digite a linha e coluna que deseja preencher: ").upper()
+            position = position.replace(position[0], convert_line(position[0]))
+            position = position.replace(position[1], convert_column(position[1]))
             valid_position = validate_position(table, position)
 
         if current_player == 0:
