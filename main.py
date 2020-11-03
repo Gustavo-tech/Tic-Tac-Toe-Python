@@ -13,11 +13,15 @@ def show_winner_stats(current_player: int = None, player_names: list = None, rou
     print(f"Foram jogados {rounds} rounds para acabar a partida")
     print(f"{player_names[0]} {points[0]} X {player_names[1]} {points[1]}")
 
-# Converte se a pessoa deseja continuar o jogo
-def convert_continue(text: str = None):
-    text = text.upper()
+# Pergunta se a pessoa deseja continuar o jogo
+def ask_continue():
+    continue_game_string = input("Continuar jogo? YES/NO: ").upper()
 
-    if text == "YES":
+    while continue_game_string != "YES" and continue_game_string != "NO":
+        print("Erro, por favor digite yes ou no")
+        continue_game_string = input("Continuar jogo? YES/NO: ").upper()
+
+    if continue_game_string == "YES":
         return True
     else:
         return False
@@ -157,8 +161,7 @@ while continue_game:
 
     print_board(table)
     show_winner_stats(current_player, players_names, current_round, players_points)
-    continue_game_string = input("Continuar jogo? YES/NO: ")
-    continue_game = convert_continue(continue_game_string)
+    continue_game = ask_continue()
 
     if continue_game:
         game_finished = False
