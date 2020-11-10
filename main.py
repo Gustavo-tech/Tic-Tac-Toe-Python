@@ -18,7 +18,7 @@ def ask_continue():
     continue_game_string = input("Continuar jogo? YES/NO: ").upper()
 
     while continue_game_string != "YES" and continue_game_string != "NO":
-        print("Erro, por favor digite yes ou no")
+        print("Erro, por favor digite 'yes' ou 'no'")
         continue_game_string = input("Continuar jogo? YES/NO: ").upper()
 
     if continue_game_string == "YES":
@@ -48,10 +48,13 @@ def validate_position_text(position: str = None):
     possible_lines = ['1', '2', '3']
     possible_columns = ['A', 'B', 'C']
 
-    if position[0] not in possible_lines and position[1] not in possible_columns:
+    if len(position) != 2:
         return False
     else:
-        return True
+        if position[0] not in possible_lines and position[1] not in possible_columns:
+            return False
+        else:
+            return True
 
 # Valida a posição desejada pelo jogador
 def validate_position(table: list = None, position: str = None):
@@ -141,8 +144,10 @@ while continue_game:
         valid_text = validate_position_text(position)
 
         while not valid_text:
+            print_board(table)
             print("Erro, coluna ou linha digitada incorretamente")
             position = input("Digite a linha e coluna que deseja preencher: ").upper()
+            valid_text = validate_position_text(position)
 
         position = position.replace(position[0], convert_line(position[0]))
         position = position.replace(position[1], convert_column(position[1]))
