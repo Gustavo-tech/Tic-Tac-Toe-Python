@@ -103,7 +103,7 @@ def check_player_play(table: list = None):
         # Verifica as diagonais
         elif table[0][0] == table[1][1] == table[2][2] == player_text:
             somebody_won = True
-        elif table[2][0] == table[1][1] == table[0][3] == player_text:
+        elif table[2][0] == table[1][1] == table[0][2] == player_text:
             somebody_won = True
 
     return somebody_won
